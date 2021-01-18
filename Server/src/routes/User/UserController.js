@@ -26,7 +26,7 @@ function UserLogin(req, res, next) {
         const refreshToken = generateRefreshToken(userObj.userId);
         refreshTokens[refreshToken] = tokenObj.xsrfToken;
         res.cookie("refreshToken", refreshToken, COOKIE_OPTIONS);
-        res.cookie("XSRF-TOKEN", tokenObj.xsrfToken);
+        res.cookie("X-XSRF-TOKEN", tokenObj.xsrfToken);
         return handleResponse(req, res, 200, {
           user: userObj,
           token: tokenObj.token,

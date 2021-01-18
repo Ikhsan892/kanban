@@ -1,5 +1,5 @@
-import React, { lazy, Suspense } from "react";
-import { Login } from "./pages";
+import React from "react";
+import { Login, Home } from "./pages";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 function App() {
@@ -7,7 +7,7 @@ function App() {
     <Router>
       <Switch>
         {/* <Suspense fallback={<div>Loading...</div>}> */}
-        {/* <Route path="/" component{} /> */}
+        <Route exact={true} path="/" component={Home} />
         <Route path="/login" component={Login} />
         {/* <Route path="/signup" component{} /> */}
         {/* </Suspense> */}

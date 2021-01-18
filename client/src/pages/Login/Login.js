@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -12,6 +12,7 @@ import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import { login } from "../../utils/auth";
 
 function Copyright() {
   return (
@@ -61,6 +62,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login() {
   const classes = useStyles();
+  const [checked, setChecked] = useState(false);
+  const [name, setName] = useState("");
+  const [pw, setPw] = useState("");
+  const handleCheckbox = () => setChecked(!checked);
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -74,13 +79,36 @@ export default function Login() {
           <Typography component="h1" variant="h5">
             Login
           </Typography>
-          <form className={classes.form} noValidate>
+          <form
+            method="post"
+            className={classes.form}
+            onSubmit={(e) => {
+              e.preventDefault();
+              console.log(name);
+              console.log(pw);
+              console.log(checked);
+              if (!checked) {
+                alert("you have checked the remember me");
+              }
+              login(name, pw)
+                .then((res) => {
+                  if (res.status === 200) {
+                    alert("berhasil berhasil horay");
+                  }
+                })
+                .catch((err) => {
+                  console.error(err.message);
+                });
+            }}
+          >
             <TextField
               variant="outlined"
-              margin="normal"
+              type="text"
               required
+              margin="normal"
               fullWidth
               id="email"
+              onChange={(e) => setName(e.target.value)}
               label="Email Address"
               name="email"
               autoComplete="email"
@@ -91,6 +119,7 @@ export default function Login() {
               margin="normal"
               required
               fullWidth
+              onChange={(e) => setPw(e.target.value)}
               name="password"
               label="Password"
               type="password"
@@ -99,7 +128,10 @@ export default function Login() {
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
+              onChange={handleCheckbox}
+              checked={checked}
               label="Remember me"
+              required
             />
             <Button
               type="submit"
