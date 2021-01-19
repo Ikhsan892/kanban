@@ -56,7 +56,7 @@ function generateRefreshToken(userId) {
 }
 function verifyToken(token, xsrfToken, cb) {
   const privateKey = process.env.JWT_SECRET + xsrfToken;
-  jwt.verify(token, privateKey, cb);
+  return jwt.verify(token, privateKey, cb);
 }
 function getCleanUser(user) {
   if (!user) return null;
@@ -109,6 +109,12 @@ function clearTokens(req, res) {
   res.clearCookie("XSRF-TOKEN");
   res.clearCookie("refreshToken", COOKIE_OPTIONS);
 }
+function current_user(req) {
+  return verifyToken(
+    req.headers["authorization"].replace("Bearer ", ""),
+    req.cookies["X-XSRF-TOKEN"]
+  );
+}
 module.exports = {
   refreshTokens,
   COOKIE_OPTIONS,
@@ -116,6 +122,7 @@ module.exports = {
   generateRefreshToken,
   verifyToken,
   getCleanUser,
+  current_user,
   handleResponse,
   clearTokens,
 };

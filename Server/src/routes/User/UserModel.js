@@ -59,6 +59,13 @@ async function findUserForLogin(nama, pw) {
     },
   });
 }
+async function updateUserData(req) {
+  return await user.update(req.body, {
+    where: {
+      id: req.user.userId,
+    },
+  });
+}
 async function insertNewUser(arr) {
   return await user.create({
     nama_depan: arr["nama_depan"],
@@ -76,4 +83,4 @@ async function insertNewUser(arr) {
 
 // `sequelize.define` also returns the model
 // console.log(Kategori === sequelize.models.Kategori); // true
-module.exports = { user, findUserForLogin, insertNewUser };
+module.exports = { user, findUserForLogin, insertNewUser, updateUserData };

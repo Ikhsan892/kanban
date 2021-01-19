@@ -8,7 +8,26 @@ const {
   handleResponse,
 } = require("../../utils/authUtils");
 
-function UserLogin(req, res, next) {
+function UserUpdate(req, res) {
+  if (req.body === undefined || req.body === null) {
+    return handleResponse(req, res, 204, "You are nothing to update");
+  } else {
+    userModel
+      .updateUserData(req)
+      .then(function () {
+        return handleResponse(req, res, 201, "Success Update the User");
+      })
+      .catch(function (err) {
+        return handleResponse(req, res, 500, err.message);
+      });
+  }
+}
+
+function UserVerify(req, res) {
+  return handleResponse(req, res, 201, req.user);
+}
+
+function UserLogin(req, res) {
   userModel
     .findUserForLogin(req.body.nama, req.body.password)
     .then(function (userData) {
@@ -33,7 +52,6 @@ function UserLogin(req, res, next) {
           expiredAt: tokenObj.expiredAt,
         });
       }
-      next();
     })
     .catch(function (err) {
       return handleResponse(req, res, 500, {
@@ -41,7 +59,7 @@ function UserLogin(req, res, next) {
       });
     });
 }
-function UserSignup(req, res, next) {
+function UserSignup(req, res) {
   const arr = [];
   arr["nama_depan"] = req.body.nama_depan;
   arr["nama_belakang"] = req.body.nama_belakang;
@@ -63,4 +81,4 @@ function UserSignup(req, res, next) {
     });
 }
 
-module.exports = { UserLogin, UserSignup };
+module.exports = { UserLogin, UserSignup, UserVerify, UserUpdate };

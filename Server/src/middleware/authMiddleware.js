@@ -13,7 +13,8 @@ const authMiddleware = function (req, res, next) {
   token = token.replace("Bearer ", "");
 
   // get xsrf token from the header
-  const xsrfToken = req.headers["x-xsrf-token"];
+  // const xsrfToken = req.headers["x-xsrf-token"];
+  const xsrfToken = req.cookies["X-XSRF-TOKEN"];
   if (!xsrfToken) {
     return handleResponse(req, res, 403);
   }

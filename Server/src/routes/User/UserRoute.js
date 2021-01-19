@@ -8,10 +8,18 @@ const {
   clearTokens,
   handleResponse,
 } = require("../../utils/authUtils");
-const { UserLogin, UserSignup } = require("./UserController");
+const {
+  UserLogin,
+  UserSignup,
+  UserVerify,
+  UserUpdate,
+} = require("./UserController");
+const authMiddleware = require("../../middleware/authMiddleware");
 
+router.post("/verify", authMiddleware, UserVerify);
 router.post("/signup", UserSignup);
 router.post("/login", UserLogin);
+router.put("/update", authMiddleware, UserUpdate);
 router.post("/logout", (req, res) => {
   clearTokens(req, res);
   return handleResponse(req, res, 204);
