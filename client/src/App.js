@@ -1,19 +1,10 @@
 import React from "react";
-import { Login, Home } from "./pages";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import routes from "./routes";
+import { renderRoutes } from "react-router-config";
+import { BrowserRouter as Router } from "react-router-dom";
 
 function App() {
-  return (
-    <Router>
-      <Switch>
-        {/* <Suspense fallback={<div>Loading...</div>}> */}
-        <Route exact={true} path="/" component={Home} />
-        <Route path="/login" component={Login} />
-        {/* <Route path="/signup" component{} /> */}
-        {/* </Suspense> */}
-      </Switch>
-    </Router>
-  );
+  return <Router history="true">{renderRoutes(routes)}</Router>;
 }
 
 export default App;
